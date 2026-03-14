@@ -9,16 +9,14 @@ function ConsolidatedPrint() {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-  apiAdmin
-    .get(`/getConsolidated/${ageGroup}/${type}`)
-    .then(res => {
+    apiAdmin.get(`/getConsolidated/${ageGroup}/${type}`).then((res) => {
       const data = res.data;
       console.log(data);
       // 🔹 Create sorted copy ONLY for ranking
       const sortedByScore = [...data].sort(
         (a, b) => b.totalScore - a.totalScore
       );
-      
+
       // 🔹 Build rank map (playerId → rank)
       const rankMap = new Map();
       sortedByScore.forEach((item, index) => {
@@ -26,16 +24,14 @@ function ConsolidatedPrint() {
       });
 
       // 🔹 Attach computedRank WITHOUT reordering rows
-      const withFrontendRank = data.map(item => ({
+      const withFrontendRank = data.map((item) => ({
         ...item,
         computedRank: rankMap.get(item.playerId),
       }));
 
       setRows(withFrontendRank);
     });
-}, [ageGroup, type]);
-
-
+  }, [ageGroup, type]);
 
   // 12 rows per page (as per PDF)
   const pages = [];
@@ -45,46 +41,31 @@ function ConsolidatedPrint() {
 
   const genderLabel = type === "MAG" ? "MAG" : "WAG";
 
-  const MAG_HEADERS = [
-    "FLOOR",
-    "VAULT",
-    "P.HORSE",
-    "RINGS",
-    "P.BARS",
-    "H.BAR"
-  ];
+  const MAG_HEADERS = ["FLOOR", "VAULT", "P.HORSE", "RINGS", "P.BARS", "H.BAR"];
 
-  const WAG_HEADERS = [
-    "VAULT",
-    "UNEVEN BAR",
-    "BALANCE BEAM",
-    "FLOOR"
-  ];
+  const WAG_HEADERS = ["VAULT", "UNEVEN BAR", "BALANCE BEAM", "FLOOR"];
 
   return (
     <>
       <div className="no-print">
-        <button className="cursor-pointer" onClick={() => window.print()}>🖨 Print / Save PDF</button>
+        <button className="cursor-pointer" onClick={() => window.print()}>
+          🖨 Print / Save PDF
+        </button>
       </div>
 
       {pages.map((page, pageIndex) => (
         <div className="page" key={pageIndex}>
-
           {/* ================= HEADER ================= */}
           <div className="header">
             <img src={Logo} className="logo" alt="logo" />
             <div className="header-text">
-              <div className="main-title">
-                WEST BENGAL GYMNASTIC ASSOCIATION
-              </div>
+              <div className="main-title">{import.meta.env.VITE_MAIN_HEAD}</div>
               <div className="sub-title">
-                {/* Regd. Under Societies Act XXVI of 1961 <br /> */}
-                (Affiliated to Gymnastic Federation of India) <br />
-                Raja Subodh Mullick Square Rd, Bowbazar, Kolkata, West Bengal 700013
+                {/* Regd. Under Societies Act XXVI of 1961 <br /> */}(
+                {import.meta.env.VITE_SECOND_LINE}) <br />
+                {import.meta.env.VITE_THIRD_LINE}
               </div>
-              <div className="sheet-title">
-                CONSOLIDATED SCORE SHEET
-              </div>
+              <div className="sheet-title">CONSOLIDATED SCORE SHEET</div>
             </div>
           </div>
 
@@ -93,9 +74,7 @@ function ConsolidatedPrint() {
             <div className="meta-left">
               GROUP : <b>{ageGroup}</b>
             </div>
-            <div className="meta-center mr-116">
-              {genderLabel}
-            </div>
+            <div className="meta-center mr-116">{genderLabel}</div>
           </div>
 
           {/* ================= TABLE ================= */}
@@ -106,7 +85,7 @@ function ConsolidatedPrint() {
                 <th>NAME OF GYMNAST</th>
                 <th>UNIT</th>
 
-                {(type === "MAG" ? MAG_HEADERS : WAG_HEADERS).map(h => (
+                {(type === "MAG" ? MAG_HEADERS : WAG_HEADERS).map((h) => (
                   <th key={h}>{h}</th>
                 ))}
 
@@ -150,8 +129,7 @@ function ConsolidatedPrint() {
               {Array.from({ length: 12 - page.length }).map((_, i) => (
                 <tr key={i}>
                   {Array.from({
-                    length:
-                      (type === "MAG" ? 11 : 9)
+                    length: type === "MAG" ? 11 : 9,
                   }).map((_, j) => (
                     <td key={j}></td>
                   ))}
@@ -160,9 +138,7 @@ function ConsolidatedPrint() {
             </tbody>
           </table>
 
-          {pageIndex < pages.length - 1 && (
-            <div className="page-break" />
-          )}
+          {pageIndex < pages.length - 1 && <div className="page-break" />}
         </div>
       ))}
 

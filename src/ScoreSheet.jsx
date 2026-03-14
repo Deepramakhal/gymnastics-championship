@@ -34,16 +34,14 @@ function ScoreSheet() {
             <img src={Logo} className="logo" alt="logo" />
             <div className="header-text">
               <div className="font-bold font-['times-new-roman'] text-3xl">
-                WEST BENGAL STATE GYMNASTIC CHAMPIONSHIP
+                {import.meta.env.VITE_MAIN_HEAD}
               </div>
               <div className="font-['times-new-roman'] font-semibold text-xl">
-                {/* Regd. Under Societies Act XXVI of 1961 <br /> */}
-                (Affiliated to Gymnastic Federation of India) <br />
-                Raja Subodh Mullick Square Rd, Bowbazar, Kolkata, West Bengal 700013
+                {/* Regd. Under Societies Act XXVI of 1961 <br /> */}(
+                {import.meta.env.VITE_SECOND_LINE}) <br />
+                {import.meta.env.VITE_THIRD_LINE}
               </div>
-              <div className="sheet-title">
-                CHAIR OF JURY SCORE SHEET
-              </div>
+              <div className="sheet-title">CHAIR OF JURY SCORE SHEET</div>
             </div>
           </div>
 
@@ -63,16 +61,44 @@ function ScoreSheet() {
           <table className="score-table">
             <thead>
               <tr>
-                <th rowSpan="2">Sl.<br/>No</th>
+                <th rowSpan="2">
+                  Sl.
+                  <br />
+                  No
+                </th>
                 <th rowSpan="2">Name of Gymnast</th>
-                <th rowSpan="2">D1/<br/>D2</th>
-                <th rowSpan="2">E Jury<br/>Out of</th>
-                <th rowSpan="2">Start<br/>Value</th>
+                <th rowSpan="2">
+                  D1/
+                  <br />
+                  D2
+                </th>
+                <th rowSpan="2">
+                  E Jury
+                  <br />
+                  Out of
+                </th>
+                <th rowSpan="2">
+                  Start
+                  <br />
+                  Value
+                </th>
                 <th colSpan="7">E Jury</th>
-                <th rowSpan="2">Total<br/>Dedn.</th>
+                <th rowSpan="2">
+                  Total
+                  <br />
+                  Dedn.
+                </th>
                 <th rowSpan="2">Avg.</th>
-                <th rowSpan="2">Other<br/>Dedn.</th>
-                <th rowSpan="2">Final<br/>Scores</th>
+                <th rowSpan="2">
+                  Other
+                  <br />
+                  Dedn.
+                </th>
+                <th rowSpan="2">
+                  Final
+                  <br />
+                  Scores
+                </th>
                 <th rowSpan="2">Remarks</th>
               </tr>
               <tr>
@@ -109,11 +135,11 @@ function ScoreSheet() {
           </table>
 
           {/* FOOTER */}
-        <div className="footer">
+          <div className="footer">
             {/* E JURY */}
             <div className="footer-ejury">
-                <div className="footer-title">E Jury</div>
-                <div className="ejury-grid">
+              <div className="footer-title">E Jury</div>
+              <div className="ejury-grid">
                 <span>E1</span>
                 <span>E3</span>
                 <span>E5</span>
@@ -121,23 +147,21 @@ function ScoreSheet() {
                 <span>E4</span>
                 <span>E6</span>
                 <span>E7</span>
-                </div>
+              </div>
             </div>
 
             {/* D JURY */}
             <div className="footer-djury">
-                <div className="footer-title">D Jury</div>
-                <div className="djury-grid">
+              <div className="footer-title">D Jury</div>
+              <div className="djury-grid">
                 <span>D1</span>
                 <span>D2</span>
-                </div>
+              </div>
             </div>
 
             {/* SECRETARY */}
-            <div className="footer-secretary">
-                Secretary
-            </div>
-            </div>
+            <div className="footer-secretary">Secretary</div>
+          </div>
 
           {pageIndex < pages.length - 1 && <div className="page-break" />}
         </div>

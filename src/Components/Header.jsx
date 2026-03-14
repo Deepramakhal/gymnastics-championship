@@ -38,20 +38,18 @@ function Header() {
         >
           {/* Main Line */}
           <h1 className="text-xl font-serif sm:text-lg md:text-xl font-bold text-gray-900">
-            West Bengal Gymnastic Association
+            {import.meta.env.VITE_MAIN_HEAD}
           </h1>
-{/* 
+          {/* 
           <p className="text-xs sm:text-sm text-gray-600">
             Registered Under Societies Act XXVI, 1961
           </p> */}
 
           <p className="text-xs sm:text-sm text-gray-600">
-            Affiliated to Gymnastic Federation of India
+            {import.meta.env.VITE_SECOND_LINE}
           </p>
 
-          <p className="text-xs sm:text-sm text-gray-600">
-            Raja Subodh Mullick Square Rd, Bowbazar, Kolkata, West Bengal 700013
-          </p>
+          <p className="text-xs sm:text-sm text-gray-600">{import.meta.env.VITE_THIRD_LINE}</p>
         </div>
 
       </div>
