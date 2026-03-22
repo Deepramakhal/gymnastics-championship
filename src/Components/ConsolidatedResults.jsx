@@ -15,7 +15,7 @@ const APPARATUS_BY_TYPE = {
     { label: "Horizontal Bar", value: "Horizontal_Bar" },
   ],
   WAG: [
-    { label: "All Round", value: "" },
+    { label: "All around", value: "" },
     { label: "Floor Exercise", value: "Floor_Exercise" },
     { label: "Table Vault", value: "Table_Vault" },
     { label: "Balancing Beam", value: "Balancing_Beam" },
@@ -78,15 +78,14 @@ function ConsolidatedResults() {
 
         {/* ================= LOADING ================= */}
         {loading && (
-          <div className="text-center text-gray-500">
-            Loading results...
-          </div>
+          <div className="text-center text-gray-500">Loading results...</div>
         )}
 
         {/* ================= NO DATA ================= */}
         {!loading && results.length === 0 && (
           <div className="text-center text-gray-500">
-            No results available. Wait for score update after completion of the event.
+            No results available. Wait for score update after completion of the
+            event.
           </div>
         )}
 
@@ -130,13 +129,9 @@ function ConsolidatedResults() {
               <tbody>
                 {results.map((p, index) => (
                   <tr key={index} className="border-t hover:bg-gray-50">
-                    <td className="p-3 font-semibold">
-                      {p.rank ?? index + 1}
-                    </td>
+                    <td className="p-3 font-semibold">{p.rank ?? index + 1}</td>
 
-                    <td className="p-3 font-semibold">
-                      {p.playerName || "—"}
-                    </td>
+                    <td className="p-3 font-semibold">{p.playerName || "—"}</td>
 
                     <td className="p-3">{p.clubName}</td>
 
@@ -149,12 +144,18 @@ function ConsolidatedResults() {
                           <>
                             <td className="p-3 text-center">{p.pommelHorse}</td>
                             <td className="p-3 text-center">{p.rings}</td>
-                            <td className="p-3 text-center">{p.parallelBars}</td>
-                            <td className="p-3 text-center">{p.horizontalBar}</td>
+                            <td className="p-3 text-center">
+                              {p.parallelBars}
+                            </td>
+                            <td className="p-3 text-center">
+                              {p.horizontalBar}
+                            </td>
                           </>
                         ) : (
                           <>
-                            <td className="p-3 text-center">{p.balancingBeam}</td>
+                            <td className="p-3 text-center">
+                              {p.balancingBeam}
+                            </td>
                             <td className="p-3 text-center">{p.unevenBars}</td>
                           </>
                         )}
@@ -181,9 +182,7 @@ function ConsolidatedResults() {
                     <p className="font-bold">
                       #{p.rank ?? index + 1} {p.playerName || ""}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      {p.clubName}
-                    </p>
+                    <p className="text-xs text-gray-500">{p.clubName}</p>
                   </div>
                   <div className="font-bold text-indigo-600">
                     {Math.round(p.totalScore * 1000) / 1000}
