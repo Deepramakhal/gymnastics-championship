@@ -37,6 +37,7 @@ function ScoringPage() {
     "Table_Vault",
     "Balancing_Beam",
     "Uneven_Bars",
+    "Table_Vault_2"
   ];
 
   /* ---------------- FETCH PLAYERS ---------------- */
