@@ -19,7 +19,7 @@ function HomePage() {
   const APPARATUS_BY_TYPE = {
     MAG: [
       { label: "Floor Exercise", key: "Floor_Exercise" },
-      { label: "Pommel Horse", key: "Pommel_Horse" },
+      { label: "Pommel Horse/Mushroom", key: "Pommel_Horse" },
       { label: "Rings", key: "Rings" },
       { label: "Table Vault", key: "Table_Vault" },
       { label: "Parallel Bars", key: "Parallel_Bars" },
