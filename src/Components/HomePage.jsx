@@ -77,8 +77,8 @@ function HomePage() {
   { title: "Under 6 Girls", ageGroup: "U6", type: "WAG" },
   { title: "Under 8 Boys", ageGroup: "U8", type: "MAG" },
   { title: "Under 8 Girls", ageGroup: "U8", type: "WAG" },
-  // { title: "Under 10 Boys", ageGroup: "U10", type: "MAG" },
-  // { title: "Under 10 Girls", ageGroup: "U10", type: "WAG" },
+  { title: "Under 10 Boys", ageGroup: "U10", type: "MAG" },
+  { title: "Under 10 Girls", ageGroup: "U10", type: "WAG" },
   { title: "11 & above Boys", ageGroup: "A11", type: "MAG" },
   { title: "11 & above Girls", ageGroup: "A11", type: "WAG" }
   // {title:"Under 12 Boys", ageGroup:"U12", type:"MAG"},

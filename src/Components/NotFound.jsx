@@ -8,7 +8,7 @@ const NotFound = () => {
         Why are you visiting this URL? 🤨 
       </p>
       <p className="text-sm text-gray-600">
-        This page does not exist in our universe 🏃‍♂️🤸‍♀️
+        This page does not exist in our universe 🏃‍♂️🤸‍♀️.
       </p>
     </div>
   );

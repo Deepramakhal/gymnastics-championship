@@ -228,6 +228,16 @@ function AdminHome() {
           onClick={() => navigateToScoringPage("U8", "WAG")}
         />
         <ActionCard
+          title="U10 Boys Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("U10", "MAG")}
+        />
+        <ActionCard
+          title="U10 Girls Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("U10", "WAG")}
+        />
+        <ActionCard
           title="11 & above Boys Scoring"
           icon="📊"
           onClick={() => navigateToScoringPage("A11", "MAG")}
@@ -286,7 +296,7 @@ function AdminHome() {
             }
           >
             <option value="">Select Age Group</option>
-            {["U4", "U6", "U8", "A11"].map((a) => (
+            {["U4", "U6", "U8","U10", "A11"].map((a) => (
               <option key={a} value={a}>
                 {a}
               </option>
@@ -355,7 +365,7 @@ function AdminHome() {
             }
           >
             <option value="">Select Age Group</option>
-            {["U4", "U6", "U8", "A11"].map((a) => (
+            {["U4", "U6", "U8","U10", "A11"].map((a) => (
               <option key={a} value={a}>
                 {a}
               </option>
@@ -415,6 +425,7 @@ function AdminHome() {
             <option value="U4">U4</option>
             <option value="U6">U6</option>
             <option value="U8">U8</option>
+            <option value="U10">U10</option>
             <option value="A11">A11</option>
             {/* <option value="U12">U12</option>
         <option value="U14">U14</option>
@@ -495,7 +506,7 @@ function AdminHome() {
                   setEditFormData({ ...editFormData, ageGroup: e.target.value })
                 }
               >
-                {["U4", "U6", "U8", "A11"].map((a) => (
+                {["U4", "U6", "U8", "U10", "A11"].map((a) => (
                   <option key={a} value={a}>
                     {a}
                   </option>
