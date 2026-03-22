@@ -205,7 +205,7 @@ function AdminHome() {
         <ActionCard
           title="U4 Girls Scoring"
           icon="📊"
-          onClick={() => navigateToScoringPage("U4", "MAG")}
+          onClick={() => navigateToScoringPage("U4", "WAG")}
         />
         <ActionCard
           title="U6 Boys Scoring"
