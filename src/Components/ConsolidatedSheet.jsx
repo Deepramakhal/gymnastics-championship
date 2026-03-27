@@ -14,7 +14,7 @@ function ConsolidatedPrint() {
       console.log(data);
       // 🔹 Create sorted copy ONLY for ranking
       const sortedByScore = [...data].sort(
-        (a, b) => b.totalScore - a.totalScore
+        (a, b) => b.totalScore - a.totalScore,
       );
 
       // 🔹 Build rank map (playerId → rank)
@@ -61,8 +61,8 @@ function ConsolidatedPrint() {
             <div className="header-text">
               <div className="main-title">{import.meta.env.VITE_MAIN_HEAD}</div>
               <div className="sub-title">
-                {/* Regd. Under Societies Act XXVI of 1961 <br /> */}(
-                {import.meta.env.VITE_SECOND_LINE}) <br />
+                {/* Regd. Under Societies Act XXVI of 1961 <br /> */}
+                {import.meta.env.VITE_SECOND_LINE} <br />
                 {import.meta.env.VITE_THIRD_LINE}
               </div>
               <div className="sheet-title">CONSOLIDATED SCORE SHEET</div>
@@ -221,9 +221,9 @@ function ConsolidatedPrint() {
         /* COLUMN WIDTHS */
         .cons-table th:nth-child(1) { width: 40px; }
         .cons-table th:nth-child(2) { width: 260px; }
-        .cons-table th:nth-child(3) { width: 90px; }
+        .cons-table th:nth-child(3) { width: 150px; }
 
-        .cons-table th:last-child { width: 70px; }
+        .cons-table th:last-child { width: 60px; }
         .cons-table th:nth-last-child(2) { width: 80px; }
 
         .page-break {
