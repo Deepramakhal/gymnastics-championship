@@ -33,10 +33,10 @@ function ConsolidatedPrint() {
     });
   }, [ageGroup, type]);
 
-  // 12 rows per page (as per PDF)
+  // 10 rows per page (as per PDF)
   const pages = [];
-  for (let i = 0; i < rows.length; i += 12) {
-    pages.push(rows.slice(i, i + 12));
+  for (let i = 0; i < rows.length; i += 10) {
+    pages.push(rows.slice(i, i + 10));
   }
 
   const genderLabel = type === "MAG" ? "MAG" : "WAG";
@@ -97,7 +97,7 @@ function ConsolidatedPrint() {
             <tbody>
               {page.map((r, i) => (
                 <tr key={i}>
-                  <td>{pageIndex * 12 + i + 1}</td>
+                  <td>{pageIndex * 10 + i + 1}</td>
                   <td className="name">{r.playerName}</td>
                   <td>{r.clubName}</td>
 
@@ -126,7 +126,7 @@ function ConsolidatedPrint() {
               ))}
 
               {/* EMPTY ROWS */}
-              {Array.from({ length: 12 - page.length }).map((_, i) => (
+              {Array.from({ length: 10 - page.length }).map((_, i) => (
                 <tr key={i}>
                   {Array.from({
                     length: type === "MAG" ? 11 : 9,
