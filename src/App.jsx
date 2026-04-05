@@ -33,7 +33,7 @@ const App = () => {
         </Route>
         <Route path="/consolidatedSheet/:ageGroup/:type" element={<ConsolidatedSheet />} />
 
-        {/* Catch-all */}
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

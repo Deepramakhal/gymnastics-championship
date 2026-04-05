@@ -9,7 +9,7 @@ const APPARATUS_BY_TYPE = {
     { label: "All around", value: "" },
     { label: "Floor Exercise", value: "Floor_Exercise" },
     { label: "Table Vault", value: "Table_Vault" },
-    { label: "Pommel Horse/Mushroom", value: "Pommel_Horse" },
+    { label: "Pommel Horse", value: "Pommel_Horse" },
     { label: "Rings", value: "Rings" },
     { label: "Parallel Bars", value: "Parallel_Bars" },
     { label: "Horizontal Bar", value: "Horizontal_Bar" },
@@ -106,7 +106,7 @@ function ConsolidatedResults() {
 
                       {isMAG ? (
                         <>
-                          <th className="p-3 text-center">Pommel/Mushroom</th>
+                          <th className="p-3 text-center">Pommel</th>
                           <th className="p-3 text-center">Rings</th>
                           <th className="p-3 text-center">P.Bars</th>
                           <th className="p-3 text-center">H.Bar</th>

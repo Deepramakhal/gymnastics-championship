@@ -19,7 +19,7 @@ function HomePage() {
   const APPARATUS_BY_TYPE = {
     MAG: [
       { label: "Floor Exercise", key: "Floor_Exercise" },
-      { label: "Pommel Horse/Mushroom", key: "Pommel_Horse" },
+      { label: "Pommel Horse", key: "Pommel_Horse" },
       { label: "Rings", key: "Rings" },
       { label: "Table Vault", key: "Table_Vault" },
       { label: "Parallel Bars", key: "Parallel_Bars" },
@@ -71,24 +71,24 @@ function HomePage() {
   }, []);
 
   const resultSheets = [
-    { title: "Under 4 Boys", ageGroup: "U4", type: "MAG" },
-    { title: "Under 4 Girls", ageGroup: "U4", type: "WAG" },
+    // { title: "Under 4 Boys", ageGroup: "U4", type: "MAG" },
+    // { title: "Under 4 Girls", ageGroup: "U4", type: "WAG" },
   { title: "Under 6 Boys", ageGroup: "U6", type: "MAG" },
   { title: "Under 6 Girls", ageGroup: "U6", type: "WAG" },
   { title: "Under 8 Boys", ageGroup: "U8", type: "MAG" },
   { title: "Under 8 Girls", ageGroup: "U8", type: "WAG" },
   { title: "Under 10 Boys", ageGroup: "U10", type: "MAG" },
   { title: "Under 10 Girls", ageGroup: "U10", type: "WAG" },
-  { title: "11 & above Boys", ageGroup: "A11", type: "MAG" },
-  { title: "11 & above Girls", ageGroup: "A11", type: "WAG" }
-  // {title:"Under 12 Boys", ageGroup:"U12", type:"MAG"},
-  // {title:"Under 12 Girls", ageGroup:"U12", type:"WAG"},
-  // {title:"Under 14 Boys", ageGroup:"U14", type:"MAG"},
-  // {title:"Under 14 Girls", ageGroup:"U14", type:"WAG"},
-  // {title:"Under 17 Boys", ageGroup:"U17", type:"MAG"},
-  // {title:"Under 17 Girls", ageGroup:"U17", type:"WAG"},
-  // {title:"Senior Boys", ageGroup:"SENIOR", type:"MAG"},
-  // {title:"Senior Girls", ageGroup:"SENIOR", type:"WAG"},
+  // { title: "11 & above Boys", ageGroup: "A11", type: "MAG" },
+  // { title: "11 & above Girls", ageGroup: "A11", type: "WAG" }
+  {title:"Under 12 Boys", ageGroup:"U12", type:"MAG"},
+  {title:"Under 12 Girls", ageGroup:"U12", type:"WAG"},
+  {title:"Under 14 Boys", ageGroup:"U14", type:"MAG"},
+  {title:"Under 14 Girls", ageGroup:"U14", type:"WAG"},
+  {title:"Junior Boys", ageGroup:"JUNIOR", type:"MAG"},
+  {title:"Junior Girls", ageGroup:"JUNIOR", type:"WAG"},
+  {title:"Senior Boys", ageGroup:"SENIOR", type:"MAG"},
+  {title:"Senior Girls", ageGroup:"SENIOR", type:"WAG"},
 ];
 
 

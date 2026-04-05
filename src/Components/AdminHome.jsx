@@ -197,7 +197,7 @@ function AdminHome() {
           onClick={() => setConsolidatedSheetPopup(true)}
         />
 
-        <ActionCard
+        {/* <ActionCard
           title="U4 Boys Scoring"
           icon="📊"
           onClick={() => navigateToScoringPage("U4", "MAG")}
@@ -206,7 +206,7 @@ function AdminHome() {
           title="U4 Girls Scoring"
           icon="📊"
           onClick={() => navigateToScoringPage("U4", "WAG")}
-        />
+        /> */}
         <ActionCard
           title="U6 Boys Scoring"
           icon="📊"
@@ -237,7 +237,7 @@ function AdminHome() {
           icon="📊"
           onClick={() => navigateToScoringPage("U10", "WAG")}
         />
-        <ActionCard
+        {/* <ActionCard
           title="11 & above Boys Scoring"
           icon="📊"
           onClick={() => navigateToScoringPage("A11", "MAG")}
@@ -246,17 +246,57 @@ function AdminHome() {
           title="11 & above Girls Scoring"
           icon="📊"
           onClick={() => navigateToScoringPage("A11", "WAG")}
+        /> */}
+        <ActionCard
+          title="U10 Boys Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("U10", "MAG")}
         />
-        {/* <ActionCard title="U10 Boys Scoring" icon="📊" onClick={() => navigateToScoringPage("U10", "MAG")} /> */}
-        {/* <ActionCard title="U10 Girls Scoring" icon="📊" onClick={() => navigateToScoringPage("U10", "WAG")} /> */}
-        {/* <ActionCard title="U12 Boys Scoring" icon="📊" onClick={() => navigateToScoringPage("U12", "MAG")} /> */}
-        {/* <ActionCard title="U12 Girls Scoring" icon="📊" onClick={() => navigateToScoringPage("U12", "WAG")} /> */}
-        {/* <ActionCard title="U14 Boys Scoring" icon="📊" onClick={() => navigateToScoringPage("U14", "MAG")} /> */}
-        {/* <ActionCard title="U14 Girls Scoring" icon="📊" onClick={() => navigateToScoringPage("U14", "WAG")} /> */}
-        {/* <ActionCard title="U17 Boys Scoring" icon="📊" onClick={() => navigateToScoringPage("U17", "MAG")} /> */}
-        {/* <ActionCard title="U17 Girls Scoring" icon="📊" onClick={() => navigateToScoringPage("U17", "WAG")} /> */}
-        {/* <ActionCard title="SENIOR Boys Scoring" icon="📊" onClick={() => navigateToScoringPage("SENIOR", "MAG")} /> */}
-        {/* <ActionCard title="SENIOR Girls Scoring" icon="📊" onClick={() => navigateToScoringPage("SENIOR", "WAG")} /> */}
+        <ActionCard
+          title="U10 Girls Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("U10", "WAG")}
+        />
+        <ActionCard
+          title="U12 Boys Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("U12", "MAG")}
+        />
+        <ActionCard
+          title="U12 Girls Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("U12", "WAG")}
+        />
+        <ActionCard
+          title="U14 Boys Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("U14", "MAG")}
+        />
+        <ActionCard
+          title="U14 Girls Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("U14", "WAG")}
+        />
+        <ActionCard
+          title="JUNIOR Boys Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("JUNIOR", "MAG")}
+        />
+        <ActionCard
+          title="JUNIOR Girls Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("JUNIOR", "WAG")}
+        />
+        <ActionCard
+          title="SENIOR Boys Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("SENIOR", "MAG")}
+        />
+        <ActionCard
+          title="SENIOR Girls Scoring"
+          icon="📊"
+          onClick={() => navigateToScoringPage("SENIOR", "WAG")}
+        />
       </div>
 
       {/* ================= CLUB MODAL ================= */}
@@ -296,7 +336,7 @@ function AdminHome() {
             }
           >
             <option value="">Select Age Group</option>
-            {["U4", "U6", "U8","U10", "A11"].map((a) => (
+            {["U6", "U8", "U10", "U12", "U14", "JUNIOR", "SENIOR"].map((a) => (
               <option key={a} value={a}>
                 {a}
               </option>
@@ -365,7 +405,7 @@ function AdminHome() {
             }
           >
             <option value="">Select Age Group</option>
-            {["U4", "U6", "U8","U10", "A11"].map((a) => (
+            {["U6", "U8", "U10", "U12", "U14", "JUNIOR", "SENIOR"].map((a) => (
               <option key={a} value={a}>
                 {a}
               </option>
@@ -422,15 +462,15 @@ function AdminHome() {
             <option value="" disabled>
               Select Age Group
             </option>
-            <option value="U4">U4</option>
+            {/* <option value="U4">U4</option> */}
             <option value="U6">U6</option>
             <option value="U8">U8</option>
             <option value="U10">U10</option>
-            <option value="A11">A11</option>
-            {/* <option value="U12">U12</option>
-        <option value="U14">U14</option>
-        <option value="U17">U17</option>
-        <option value="SENIOR">SENIOR</option> */}
+            {/* <option value="A11">A11</option> */}
+            <option value="U12">U12</option>
+            <option value="U14">U14</option>
+            <option value="JUNIOR">JUNIOR</option>
+            <option value="SENIOR">SENIOR</option>
           </select>
           <select
             onChange={(e) => setTypeForConsolidated(e.target.value)}
