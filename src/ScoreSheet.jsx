@@ -31,7 +31,7 @@ function ScoreSheet() {
         <div className="page" key={pageIndex}>
           {/* HEADER */}
           <div className="header">
-            <img src={Logo} className="logo" alt="logo" />
+            <img src={import.meta.env.VITE_LOGO_URL} className="logo" alt="logo" />
             <div className="header-text">
               <div className="font-bold font-['times-new-roman'] text-3xl">
                 {import.meta.env.VITE_MAIN_HEAD}

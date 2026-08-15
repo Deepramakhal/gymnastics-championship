@@ -7,6 +7,7 @@ import ConsolidatedResults from "./Components/ConsolidatedResults.jsx";
 import NotFound from "./Components/NotFound.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import ConsolidatedSheet from "./Components/ConsolidatedSheet.jsx";
+import GradeHelper from "./Components/GradeHelper.jsx";
 
 const App = () => {
   return (
@@ -33,7 +34,7 @@ const App = () => {
         </Route>
         <Route path="/consolidatedSheet/:ageGroup/:type" element={<ConsolidatedSheet />} />
 
-
+        <Route path="grade-helper" element={<GradeHelper />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

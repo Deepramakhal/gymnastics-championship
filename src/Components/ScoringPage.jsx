@@ -91,7 +91,7 @@ function ScoringPage() {
         const res = await apiAdmin.post(
           `/score/getConsolidated/${ageGroup}/${type}/${apparatus}`
         );
-        
+
         setScoreSheetData(res.data || []); // Ensure it's always an array
       } catch (err) {
         console.error("Error fetching scores:", err);
@@ -194,7 +194,7 @@ function ScoringPage() {
               value={selectedClub}
               onChange={(e) => setSelectedClub(e.target.value)}
             >
-              <option value="">All Clubs</option>
+              <option value="">All Units</option>
               {clubs.map((club) => (
                 <option key={club.id} value={club.name}>
                   {club.name}
@@ -211,7 +211,7 @@ function ScoringPage() {
               <span className="animate-spin mr-2">
                 &#x21bb;
               </span>
-              Reload Scores 
+              Reload Scores
             </button>
             <button
               onClick={handleReloadPage}
@@ -272,11 +272,11 @@ function ScoringPage() {
                       className={idx % 2 === 0 ? "bg-gray-50" : "bg-white"}
                     >
                       <td className="border px-3 py-2 text-blue-700 cursor-pointer font-medium flex justify-between items-center"
-                      onClick={()=>setEditPlayer(player)}>
-                          {i++}. {player.name}
-                          <span className="text-xs text-gray-500">
-                            {player.club_name}
-                          </span>
+                        onClick={() => setEditPlayer(player)}>
+                        {i++}. {player.name}
+                        <span className="text-xs text-gray-500">
+                          {player.club_name}
+                        </span>
                       </td>
                       <td className="border px-3 py-2">{score?.d1d2 ?? "-"}</td>
                       <td className="border px-3 py-2">{score?.eJuryOutOf ?? "-"}</td>

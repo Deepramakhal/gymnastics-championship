@@ -1,11 +1,10 @@
 import React from "react";
-import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
 function Header() {
   const navigate = useNavigate();
 
-  const handleLogoClick = () =>{
+  const handleLogoClick = () => {
     localStorage.removeItem("admin_token_secret21122025");
     navigate("/");
   }
@@ -16,7 +15,7 @@ function Header() {
         {/* Logo */}
         <div className="shrink-0 w-20 sm:w-24 md:w-28">
           <img
-            src={logo}
+            src={import.meta.env.VITE_LOGO_URL}
             alt="HDGA Logo"
             onClick={handleLogoClick}
             className="w-full h-auto object-contain"
