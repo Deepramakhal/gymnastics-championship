@@ -107,14 +107,8 @@ function HomePage() {
       divisions: ["IN", "OPEN"],
     },
     {
-      title: "Grade 10",
+      title: "Grade 10(JUNIOR)",
       ageGroup: "G10",
-      type: "MAG",
-      divisions: ["IN"],
-    },
-    {
-      title: "Junior",
-      ageGroup: "JUNIOR",
       type: "MAG",
       divisions: ["IN"],
     },
@@ -291,7 +285,7 @@ function HomePage() {
           className="mt-3 inline-flex items-center cursor-pointer gap-2 text-xs text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full"
           onClick={() => window.location.reload()}
         >
-          ⟳ Reload occasionally to see updates
+          ⟳ Reload occasionally to get updated scores
         </div>
       </div>
 

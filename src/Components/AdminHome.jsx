@@ -696,9 +696,8 @@ function AdminHome() {
     { title: "Grade 9", division: "IN", value: "G9IN" },
     { title: "Grade 9", division: "OPEN", value: "G9OPEN" },
 
-    { title: "Grade 10", division: "IN", value: "G10IN" },
+    { title: "Grade 10(JUNIOR)", division: "IN", value: "G10IN" },
 
-    { title: "Junior", division: "IN", value: "JUNIOR" },
     { title: "Senior", division: "IN", value: "SENIOR" },
   ];
 
