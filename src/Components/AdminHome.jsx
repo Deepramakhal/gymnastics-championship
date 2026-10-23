@@ -1188,21 +1188,65 @@ function AdminHome() {
      PRINT CHAIR OF JURY
      ========================================================= */
 
-  const submitPrint = () => {
-    if (!printForm.ageGroup || !printForm.type) return;
+  const submitBlankPrint = () => {
+    navigate("/scoresheet/blank/blank/blank?blank=true");
+  };
+
+  // Validate selections for options 2 and 3
+  const validatePrintSelection = () => {
+    if (
+      !printForm.ageGroup ||
+      !printForm.type ||
+      !printForm.apparatus.trim()
+    ) {
+      alert("Please select grade/group, category, and apparatus.");
+      return false;
+    }
+    return true;
+  };
+
+  // Option 2: Names only
+  const submitNamesPrint = () => {
+    if (!validatePrintSelection()) return;
 
     navigate(
-      `/scoresheet/${printForm.ageGroup}/${printForm.type}/${printForm.apparatus}`,
+      `/scoresheet/${printForm.ageGroup}/${printForm.type}/${encodeURIComponent(printForm.apparatus)}?mode=names`
     );
   };
 
-  /* =========================================================
-     CONSOLIDATED PRINT
-     ========================================================= */
+  // Option 3: Names and saved scores
+  const submitScoresPrint = () => {
+    if (!validatePrintSelection()) return;
 
-  const handleConsolidatedPrint = () => {
     navigate(
-      `/consolidatedsheet/${ageGroupForConsolidated}/${typeForConsolidated}`,
+      `/scoresheet/${printForm.ageGroup}/${printForm.type}/${encodeURIComponent(printForm.apparatus)}?mode=scores`
+    );
+  };
+
+
+  const validateConsolidatedSelection = () => {
+    if (!ageGroupForConsolidated || !typeForConsolidated) {
+      alert("Please select age group and category.");
+      return false;
+    }
+    return true;
+  };
+
+  // Option 1: Blank consolidated sheet
+  const handleBlankConsolidatedPrint = () => {
+    if (!validateConsolidatedSelection()) return;
+
+    navigate(
+      `/consolidatedsheet/${ageGroupForConsolidated}/${typeForConsolidated}?blank=true`
+    );
+  };
+
+  // Option 2: Consolidated sheet with scores
+  const handleConsolidatedPrint = () => {
+    if (!validateConsolidatedSelection()) return;
+
+    navigate(
+      `/consolidatedsheet/${ageGroupForConsolidated}/${typeForConsolidated}`
     );
   };
 
@@ -1388,74 +1432,190 @@ function AdminHome() {
       {/* =====================================================
           PRINT CHAIR OF JURY
           ===================================================== */}
-
       {printPopOpen && (
-        <Modal
-          onClose={() => setPrintPopOpen(false)}
-        >
-          <h2 className="modal-title">
-            Print Chair of Jury Sheet
-          </h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 sm:p-5">
+          <div className="relative flex max-h-[92vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
 
-          <Select
-            value={printForm.ageGroup}
-            onChange={(e) =>
-              setPrintForm({
-                ...printForm,
-                ageGroup: e.target.value,
-              })
-            }
-          >
-            <option value="">
-              Select Age Group
-            </option>
+            {/* FIXED HEADER */}
+            <div className="flex items-center justify-between border-b px-5 py-4 sm:px-6">
+              <div>
+                <h2 className="text-lg font-bold text-gray-900 sm:text-xl">
+                  Print Chair of Jury Sheet
+                </h2>
+                <p className="mt-1 text-xs text-gray-500 sm:text-sm">
+                  Choose a sheet format to print
+                </p>
+              </div>
 
-            {(printForm.type === "MAG"
-              ? MAG_AGE_GROUPS
-              : WAG_AGE_GROUPS
-            ).map((group) => (
-              <option
-                key={group.value}
-                value={group.value}
+              <button
+                type="button"
+                onClick={() => setPrintPopOpen(false)}
+                className="ml-3 rounded-lg px-3 py-2 text-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                aria-label="Close print modal"
               >
-                {group.title} - {group.division}
-              </option>
-            ))}
-          </Select>
+                ✕
+              </button>
+            </div>
 
-          <Select
-            value={printForm.type}
-            onChange={(e) =>
-              setPrintForm({
-                ...printForm,
-                type: e.target.value,
-                ageGroup: "",
-              })
-            }
-          >
-            <option value="MAG">MAG</option>
-            <option value="WAG">WAG</option>
-          </Select>
+            {/* SCROLLABLE CONTENT */}
+            <div className="overflow-y-auto p-4 sm:p-6">
 
-          <input
-            type="text"
-            placeholder="Apparatus"
-            value={printForm.apparatus}
-            onChange={(e) =>
-              setPrintForm({
-                ...printForm,
-                apparatus: e.target.value,
-              })
-            }
-          />
+              {/* OPTION 1 */}
+              <button
+                type="button"
+                onClick={submitBlankPrint}
+                className="mb-4 flex w-full items-center gap-4 rounded-xl border border-gray-200 p-4 text-left transition hover:border-blue-400 hover:bg-blue-50"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-2xl">
+                  📄
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-gray-900">
+                    1. Blank Jury Sheet
+                  </div>
+                  <p className="mt-1 text-sm text-gray-600">
+                    Eight empty rows, without player names or category details.
+                  </p>
+                </div>
+                <span className="shrink-0 text-sm font-semibold text-blue-700">
+                  Print →
+                </span>
+              </button>
 
-          <button
-            onClick={submitPrint}
-            className="primary-btn"
-          >
-            🖨️ Print
-          </button>
-        </Modal>
+              {/* CATEGORY SELECTION */}
+              <div className="mb-4 rounded-xl border border-gray-200 p-4 sm:p-5">
+                <h3 className="font-semibold text-gray-900">
+                  Category Details
+                </h3>
+                <p className="mb-4 mt-1 text-sm text-gray-500">
+                  Select the same category for either of the next two options.
+                </p>
+
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">
+                      Grade / Group
+                    </label>
+                    <Select
+                      value={printForm.ageGroup}
+                      onChange={(e) =>
+                        setPrintForm({
+                          ...printForm,
+                          ageGroup: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="">Select Grade / Group</option>
+
+                      {(printForm.type === "WAG"
+                        ? WAG_AGE_GROUPS
+                        : MAG_AGE_GROUPS
+                      ).map((group) => (
+                        <option key={group.value} value={group.value}>
+                          {group.title} - {group.division}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                      Category
+                    </label>
+                    <Select
+                      value={printForm.type}
+                      onChange={(e) =>
+                        setPrintForm({
+                          ...printForm,
+                          type: e.target.value,
+                          ageGroup: "",
+                        })
+                      }
+                    >
+                      <option value="MAG">MAG — Boys</option>
+                      <option value="WAG">WAG — Girls</option>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="mt-3">
+                  <label className="mb-1 block text-sm font-medium text-gray-700">
+                    Apparatus
+                  </label>
+                  <Input
+                    placeholder="e.g. Floor_Exercise"
+                    value={printForm.apparatus}
+                    onChange={(e) =>
+                      setPrintForm({
+                        ...printForm,
+                        apparatus: e.target.value,
+                      })
+                    }
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Use the exact apparatus name expected by the scoring system.
+                  </p>
+                </div>
+              </div>
+
+              {/* OPTION 2 */}
+              <button
+                type="button"
+                onClick={submitNamesPrint}
+                className="mb-4 flex w-full items-center gap-4 rounded-xl border border-indigo-200 p-4 text-left transition hover:bg-indigo-50"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-100 text-2xl">
+                  📝
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-gray-900">
+                    2. Names Only
+                  </div>
+                  <p className="mt-1 text-sm text-gray-600">
+                    Player names and category details, with empty score cells.
+                  </p>
+                </div>
+                <span className="shrink-0 text-sm font-semibold text-indigo-700">
+                  Print →
+                </span>
+              </button>
+
+              {/* OPTION 3 */}
+              <button
+                type="button"
+                onClick={submitScoresPrint}
+                className="flex w-full items-center gap-4 rounded-xl border border-emerald-200 p-4 text-left transition hover:bg-emerald-50"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-2xl">
+                  📊
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-gray-900">
+                    3. Names with Scores
+                  </div>
+                  <p className="mt-1 text-sm text-gray-600">
+                    Player names, D1/D2, E-jury values, deductions, averages,
+                    and final scores.
+                  </p>
+                </div>
+                <span className="shrink-0 text-sm font-semibold text-emerald-700">
+                  Print →
+                </span>
+              </button>
+            </div>
+
+            {/* FIXED FOOTER */}
+            <div className="border-t bg-gray-50 px-5 py-3 text-right sm:px-6">
+              <button
+                type="button"
+                onClick={() => setPrintPopOpen(false)}
+                className="rounded-lg border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* =====================================================
@@ -1594,65 +1754,91 @@ function AdminHome() {
           ===================================================== */}
 
       {consolidatedSheetPopup && (
-        <Modal
-          onClose={() =>
-            setConsolidatedSheetPopup(false)
-          }
-        >
-          <h2 className="modal-title">
-            Consolidated Sheet Print
-          </h2>
+        <Modal onClose={() => setConsolidatedSheetPopup(false)}>
+          <h2 className="modal-title">Consolidated Sheet Print</h2>
 
-          <select
-            onChange={(e) =>
-              setAgeGroupForConsolidated(
-                e.target.value,
-              )
-            }
+          <p className="mb-3 text-sm text-gray-600">
+            Select the age group and category, then choose the sheet format.
+          </p>
+
+          {/* CATEGORY SELECTION */}
+          <label className="block text-sm font-medium mb-1">
+            Grade / Group
+          </label>
+          <Select
             value={ageGroupForConsolidated}
+            onChange={(e) => setAgeGroupForConsolidated(e.target.value)}
           >
-            <option value="" disabled>
-              Select Age Group
-            </option>
+            <option value="">Select Grade / Group</option>
 
             {(typeForConsolidated === "WAG"
               ? WAG_AGE_GROUPS
               : MAG_AGE_GROUPS
             ).map((group) => (
-              <option
-                key={group.value}
-                value={group.value}
-              >
+              <option key={group.value} value={group.value}>
                 {group.title} - {group.division}
               </option>
             ))}
-          </select>
+          </Select>
 
-          <select
-            onChange={(e) => {
-              setTypeForConsolidated(e.target.value);
-              setAgeGroupForConsolidated("");
-            }}
+          <label className="block text-sm font-medium mb-1">
+            Category
+          </label>
+          <Select
             value={typeForConsolidated}
+            onChange={(e) => setTypeForConsolidated(e.target.value)}
           >
-            <option value="">
-              Select Type
-            </option>
+            <option value="">Select Category</option>
+            <option value="MAG">MAG — Boys</option>
+            <option value="WAG">WAG — Girls</option>
+          </Select>
 
-            <option value="MAG">
-              MAG
-            </option>
-
-            <option value="WAG">
-              WAG
-            </option>
-          </select>
-
+          {/* OPTION 1: BLANK SHEET */}
           <button
-            onClick={handleConsolidatedPrint}
-            className="primary-btn"
+            type="button"
+            onClick={handleBlankConsolidatedPrint}
+            className="mt-3 mb-3 flex w-full items-center gap-3 rounded-xl border border-gray-200 p-4 text-left transition hover:border-blue-400 hover:bg-blue-50"
           >
-            🖨️ Print
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-2xl">
+              📄
+            </div>
+
+            <div className="flex-1">
+              <div className="font-semibold text-gray-900">
+                1. Blank Consolidated Sheet
+              </div>
+              <p className="mt-1 text-sm text-gray-600">
+                Empty gymnast rows with apparatus columns, total, and rank.
+              </p>
+            </div>
+
+            <span className="text-sm font-semibold text-blue-700">
+              Print →
+            </span>
+          </button>
+
+          {/* OPTION 2: SHEET WITH SCORES */}
+          <button
+            type="button"
+            onClick={handleConsolidatedPrint}
+            className="flex w-full items-center gap-3 rounded-xl border border-emerald-200 p-4 text-left transition hover:bg-emerald-50"
+          >
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-2xl">
+              📊
+            </div>
+
+            <div className="flex-1">
+              <div className="font-semibold text-gray-900">
+                2. Consolidated Sheet with Scores
+              </div>
+              <p className="mt-1 text-sm text-gray-600">
+                Print gymnast names, apparatus scores, totals, and rankings.
+              </p>
+            </div>
+
+            <span className="text-sm font-semibold text-emerald-700">
+              Print →
+            </span>
           </button>
         </Modal>
       )}

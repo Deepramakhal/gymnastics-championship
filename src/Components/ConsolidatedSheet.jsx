@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import apiAdmin from "../apiConfigAdmin";
 import Logo from "../assets/logo.png";
 
@@ -8,22 +8,27 @@ function ConsolidatedPrint() {
   const { ageGroup, type } = useParams();
   const [rows, setRows] = useState([]);
 
+  const [searchParams] = useSearchParams();
+  const isBlank = searchParams.get("blank") === "true";
+
   useEffect(() => {
+    if (isBlank) {
+      setRows([]);
+      return;
+    }
+
     apiAdmin.get(`/getConsolidated/${ageGroup}/${type}`).then((res) => {
       const data = res.data;
-      console.log(data);
-      // 🔹 Create sorted copy ONLY for ranking
+
       const sortedByScore = [...data].sort(
-        (a, b) => b.totalScore - a.totalScore,
+        (a, b) => b.totalScore - a.totalScore
       );
 
-      // 🔹 Build rank map (playerId → rank)
       const rankMap = new Map();
       sortedByScore.forEach((item, index) => {
         rankMap.set(item.playerId, index + 1);
       });
 
-      // 🔹 Attach computedRank WITHOUT reordering rows
       const withFrontendRank = data.map((item) => ({
         ...item,
         computedRank: rankMap.get(item.playerId),
@@ -31,12 +36,17 @@ function ConsolidatedPrint() {
 
       setRows(withFrontendRank);
     });
-  }, [ageGroup, type]);
+  }, [ageGroup, type, isBlank]);
 
-  // 10 rows per page (as per PDF)
+  // 12 rows per page (as per PDF)
   const pages = [];
-  for (let i = 0; i < rows.length; i += 10) {
-    pages.push(rows.slice(i, i + 10));
+
+  if (isBlank) {
+    pages.push([]);
+  } else {
+    for (let i = 0; i < rows.length; i += 12) {
+      pages.push(rows.slice(i, i + 12));
+    }
   }
 
   const genderLabel = type === "MAG" ? "MAG" : "WAG";
@@ -44,6 +54,8 @@ function ConsolidatedPrint() {
   const MAG_HEADERS = ["FLOOR", "VAULT", "P.HORSE", "RINGS", "P.BARS", "H.BAR"];
 
   const WAG_HEADERS = ["VAULT", "UNEVEN BAR", "BALANCE BEAM", "FLOOR"];
+
+  const displayScore = (score) => (Number(score) === 0 ? "" : score);
 
   return (
     <>
@@ -57,12 +69,12 @@ function ConsolidatedPrint() {
         <div className="page" key={pageIndex}>
           {/* ================= HEADER ================= */}
           <div className="header">
-            <img src={import.meta.env.VITE_LOGO_URL} className="logo" alt="logo" />
+            <img src={Logo} className="logo" alt="logo" />
             <div className="header-text">
               <div className="main-title">{import.meta.env.VITE_MAIN_HEAD}</div>
               <div className="sub-title">
-                {/* Regd. Under Societies Act XXVI of 1961 <br /> */}
-                {import.meta.env.VITE_SECOND_LINE} <br />
+                {/* Regd. Under Societies Act XXVI of 1961 <br /> */}(
+                {import.meta.env.VITE_SECOND_LINE}) <br />
                 {import.meta.env.VITE_THIRD_LINE}
               </div>
               <div className="sheet-title">CONSOLIDATED SCORE SHEET</div>
@@ -95,39 +107,44 @@ function ConsolidatedPrint() {
             </thead>
 
             <tbody>
-              {page.map((r, i) => (
-                <tr key={i}>
-                  <td>{pageIndex * 10 + i + 1}</td>
-                  <td className="name">{r.playerName}</td>
-                  <td>{r.clubName}</td>
+              {!isBlank &&
+                page.map((r, i) => (
+                  <tr key={i}>
+                    <td>{pageIndex * 12 + i + 1}</td>
+                    <td className="name">{r.playerName}</td>
+                    <td>{r.clubName}</td>
 
-                  {type === "MAG" && (
-                    <>
-                      <td>{r.floorExercise}</td>
-                      <td>{r.tableVault}</td>
-                      <td>{r.pommelHorse}</td>
-                      <td>{r.rings}</td>
-                      <td>{r.parallelBars}</td>
-                      <td>{r.horizontalBar}</td>
-                    </>
-                  )}
+                    {type === "MAG" && (
+                      <>
+                        <td>{displayScore(r.floorExercise)}</td>
+                        <td>{displayScore(r.tableVault)}</td>
+                        <td>{displayScore(r.pommelHorse)}</td>
+                        <td>{displayScore(r.rings)}</td>
+                        <td>{displayScore(r.parallelBars)}</td>
+                        <td>{displayScore(r.horizontalBar)}</td>
+                      </>
+                    )}
 
-                  {type === "WAG" && (
-                    <>
-                      <td>{r.tableVault}</td>
-                      <td>{r.unevenBars}</td>
-                      <td>{r.balancingBeam}</td>
-                      <td>{r.floorExercise}</td>
-                    </>
-                  )}
-                  <td className="bold">{r.totalScore.toFixed(3)}</td>
-                  <td className="bold">{r.computedRank}</td>
-                </tr>
-              ))}
+                    {type === "WAG" && (
+                      <>
+                        <td>{displayScore(r.tableVault)}</td>
+                        <td>{displayScore(r.unevenBars)}</td>
+                        <td>{displayScore(r.balancingBeam)}</td>
+                        <td>{displayScore(r.floorExercise)}</td>
+                      </>
+                    )}
 
-              {/* EMPTY ROWS */}
-              {Array.from({ length: 10 - page.length }).map((_, i) => (
-                <tr key={i}>
+                    <td className="bold">
+                      {r.totalScore == null ? "" : Number(r.totalScore).toFixed(3)}
+                    </td>
+                    <td className="bold">{r.computedRank}</td>
+                  </tr>
+                ))}
+
+              {Array.from({
+                length: isBlank ? 12 : 12 - page.length,
+              }).map((_, i) => (
+                <tr key={`empty-${i}`}>
                   {Array.from({
                     length: type === "MAG" ? 11 : 9,
                   }).map((_, j) => (
@@ -221,9 +238,9 @@ function ConsolidatedPrint() {
         /* COLUMN WIDTHS */
         .cons-table th:nth-child(1) { width: 40px; }
         .cons-table th:nth-child(2) { width: 260px; }
-        .cons-table th:nth-child(3) { width: 150px; }
+        .cons-table th:nth-child(3) { width: 90px; }
 
-        .cons-table th:last-child { width: 60px; }
+        .cons-table th:last-child { width: 70px; }
         .cons-table th:nth-last-child(2) { width: 80px; }
 
         .page-break {
