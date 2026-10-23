@@ -74,10 +74,6 @@ export default function SecretaryLoginModal({ onClose, onSuccess }) {
     event.preventDefault();
     setError("");
 
-    if (newPassword.length < 12) {
-      setError("Your new password must contain at least 12 characters.");
-      return;
-    }
     if (newPassword !== confirmPassword) {
       setError("The new password and confirmation do not match.");
       return;
@@ -160,7 +156,7 @@ export default function SecretaryLoginModal({ onClose, onSuccess }) {
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label htmlFor="secretary-code" className="mb-1 block text-sm font-medium text-gray-700">
-                Secretary ID
+                Secretary ID (or Mobile number)
               </label>
               <input
                 id="secretary-code"
@@ -237,7 +233,6 @@ export default function SecretaryLoginModal({ onClose, onSuccess }) {
                 type="password"
                 autoComplete="new-password"
                 required
-                minLength={12}
                 maxLength={128}
                 value={newPassword}
                 onChange={(event) => setNewPassword(event.target.value)}
@@ -262,7 +257,7 @@ export default function SecretaryLoginModal({ onClose, onSuccess }) {
               />
             </div>
             <p className="text-xs leading-5 text-gray-500">
-              Use at least 12 characters. Your session will remain active after the password is changed.
+              Use a password you can remember easily. Password is needed only once in a day for log-in.
             </p>
             <button
               type="submit"
