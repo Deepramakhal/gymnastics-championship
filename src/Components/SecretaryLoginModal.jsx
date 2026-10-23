@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../apiConfig";
 
 /**
@@ -12,6 +13,12 @@ import api from "../apiConfig";
  * allow credentials. Per-request withCredentials is also set below.
  */
 export default function SecretaryLoginModal({ onClose, onSuccess }) {
+  const navigate = useNavigate();
+
+  const finishLogin = (data) => {
+    onSuccess?.(data);
+    navigate("/secretary", { replace: true });
+  };
   const [stage, setStage] = useState("login");
   const [secretaryCode, setSecretaryCode] = useState("");
   const [password, setPassword] = useState("");
@@ -54,7 +61,7 @@ export default function SecretaryLoginModal({ onClose, onSuccess }) {
       if (data.passwordChangeRequired) {
         setStage("change-password");
       } else {
-        onSuccess?.(data);
+        finishLogin(data);
       }
     } catch (err) {
       setError(getErrorMessage(err));
@@ -90,7 +97,7 @@ export default function SecretaryLoginModal({ onClose, onSuccess }) {
         },
         { withCredentials: true }
       );
-      onSuccess?.({
+      finishLogin({
         secretaryCode: secretaryCode.trim(),
         name: secretaryName,
         passwordChangeRequired: false,
