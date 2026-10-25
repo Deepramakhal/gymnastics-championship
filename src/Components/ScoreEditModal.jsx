@@ -34,7 +34,7 @@ function ScoreEditModal({
 }) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [globalValue, setGlobalValue] = useState("");
-const [useGlobal, setUseGlobal] = useState(false);
+  const [useGlobal, setUseGlobal] = useState(false);
 
 
   /* ================= PREFILL ================= */
@@ -72,23 +72,54 @@ const [useGlobal, setUseGlobal] = useState(false);
     }));
   };
   const handleGlobalSubmit = async () => {
-  if (!globalValue) {
-    alert("Enter global value");
-    return;
-  }
+    if (!globalValue) {
+      alert("Enter global value");
+      return;
+    }
 
-  try {
-    await apiAdmin.post(
-      `score/globalValue/${player.id}/${Number(globalValue)}/${type}/${apparatus}`
+    try {
+      await apiAdmin.post(
+        `score/globalValue/${player.id}/${Number(globalValue)}/${type}/${apparatus}`
+      );
+
+      onSuccess();
+      onClose();
+    } catch (err) {
+      console.error("Global value update failed:", err);
+      alert("Failed to apply global value");
+    }
+  };
+
+  const handleDeleteScoring = async () => {
+    const confirmed = window.confirm(
+      `Delete scoring for ${player.name} in ${apparatus} (${type})? This will also reset the player's apparatus score.`
     );
 
-    onSuccess();
-    onClose();
-  } catch (err) {
-    console.error("Global value update failed:", err);
-    alert("Failed to apply global value");
-  }
-};
+    if (!confirmed) return;
+
+    try {
+      await apiAdmin.delete(
+        `/score/scoresheet?playerId=${player.id}&apparatus=${encodeURIComponent(apparatus)}&type=${encodeURIComponent(type)}`
+      );
+
+      alert("Scoring deleted successfully.");
+
+      await onSuccess();
+      onClose();
+    } catch (err) {
+      console.error("Scoring deletion failed:", err);
+
+      if (err.response?.status === 404) {
+        alert("No matching scoresheet was found.");
+      } else {
+        alert(
+          err.response?.data?.message ||
+          "Failed to delete scoring. Please try again."
+        );
+      }
+    }
+  };
+
 
 
   /* ================= SUBMIT ================= */
@@ -157,7 +188,7 @@ const [useGlobal, setUseGlobal] = useState(false);
                 <Td><Input value={form.d1d2} onChange={(v) => handleChange("d1d2", v)} /></Td>
                 <Td><Input value={form.eJuryOutOf} onChange={(v) => handleChange("eJuryOutOf", v)} /></Td>
 
-                {["e1","e2","e3","e4","e5","e6","e7"].map((e) => (
+                {["e1", "e2", "e3", "e4", "e5", "e6", "e7"].map((e) => (
                   <Td key={e}>
                     <Input value={form[e]} onChange={(v) => handleChange(e, v)} />
                   </Td>
@@ -173,19 +204,19 @@ const [useGlobal, setUseGlobal] = useState(false);
             </tbody>
           </table>
         </div>
-{/* ================= GLOBAL VALUE ================= */}
-<div className="mt-6 border-t pt-4">
-  <div className="flex items-center gap-3">
-    <input
-      type="text"
-      inputMode="decimal"
-      value={globalValue}
-      onChange={(e) => {
-        setGlobalValue(e.target.value);
-        setUseGlobal(true);
-      }}
-      placeholder="Enter global value"
-      className="
+        {/* ================= GLOBAL VALUE ================= */}
+        <div className="mt-6 border-t pt-4">
+          <div className="flex items-center gap-3">
+            <input
+              type="text"
+              inputMode="decimal"
+              value={globalValue}
+              onChange={(e) => {
+                setGlobalValue(e.target.value);
+                setUseGlobal(true);
+              }}
+              placeholder="Enter global value"
+              className="
         w-40
         border
         rounded-md
@@ -196,11 +227,11 @@ const [useGlobal, setUseGlobal] = useState(false);
         focus:ring-2
         focus:ring-red-400
       "
-    />
+            />
 
-    <button
-      onClick={handleGlobalSubmit}
-      className="
+            <button
+              onClick={handleGlobalSubmit}
+              className="
         px-4
         py-2
         rounded-lg
@@ -208,27 +239,40 @@ const [useGlobal, setUseGlobal] = useState(false);
         text-white
         hover:bg-red-700
       "
-    >
-      Apply Global Value
-    </button>
-  </div>
-</div>
+            >
+              Apply Global Value
+            </button>
+          </div>
+        </div>
+
 
         {/* ================= ACTIONS ================= */}
-        <div className="mt-6 flex justify-end gap-3">
+        <div className="mt-6 flex justify-between items-center gap-3">
           <button
-            onClick={onClose}
-            className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
+            onClick={handleDeleteScoring}
+            disabled={!existingScore}
+            className="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
-            Cancel
+            Delete Scoring
           </button>
-          <button
-            onClick={handleSubmit}
-            className="px-5 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
-          >
-            Save Scores
-          </button>
+
+          <div className="flex gap-3">
+            <button
+              onClick={onClose}
+              className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={handleSubmit}
+              className="px-5 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+            >
+              Save Scores
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
   );
