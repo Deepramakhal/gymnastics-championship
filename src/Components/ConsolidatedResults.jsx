@@ -381,19 +381,18 @@ function ConsolidatedResults() {
                         </p>
                       </div>
 
-                      {/* E JURY AVERAGE */}
                       <div className="flex items-center justify-between bg-gray-50 rounded-xl p-4">
                         <div>
                           <p className="text-sm font-semibold text-gray-700">
-                            E Jury Average
+                            Execution
                           </p>
                           <p className="text-xs text-gray-400 mt-1">
-                            Execution deduction
+                            E Jury score 
                           </p>
                         </div>
 
                         <p className="text-xl font-bold text-gray-900 tabular-nums">
-                          {Number(selectedPlayerScore.avg ?? 0).toFixed(3)}
+                          {(Number(selectedPlayerScore.eJuryOutOf ?? 0) - Number(selectedPlayerScore.avg ?? 0)).toFixed(3)}
                         </p>
                       </div>
 
@@ -408,7 +407,7 @@ function ConsolidatedResults() {
                           </p>
                         </div>
 
-                        <p className="text-xl font-bold text-red-600 tabular-nums">
+                        <p className="text-xl font-bold text-gray-600 tabular-nums">
                           {Number(
                             selectedPlayerScore.otherDeduction ?? 0
                           ).toFixed(3)}
