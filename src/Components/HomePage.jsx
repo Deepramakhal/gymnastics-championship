@@ -303,12 +303,17 @@ function HomePage() {
           Gymnastics Championship Portal
         </h1>
 
-        <div
-          className="mt-3 inline-flex items-center cursor-pointer gap-2 text-xs text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full"
-          onClick={() => window.location.reload()}
+        <button
+          type="button"
+          onClick={() => navigate("/live")}
+          className="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-full bg-indigo-100 px-3 py-1 text-xs text-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
-          ⟳ Reload occasionally to get updated scores
-        </div>
+          <span
+            aria-hidden="true"
+            className="live-score-indicator h-2 w-2 rounded-full bg-indigo-600"
+          />
+          Live Scores
+        </button>
       </div>
 
       {/* SEARCH */}
