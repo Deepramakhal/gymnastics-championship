@@ -83,6 +83,8 @@ const ALL_GROUPS = ["MAG", "WAG"].flatMap((type) =>
     )
 );
 
+
+
 const readable = (value) =>
     String(value || "")
         .replaceAll("_", " ")
@@ -148,6 +150,41 @@ function SecretaryScoringPage() {
     const [submitError, setSubmitError] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [loggingOut, setLoggingOut] = useState(false);
+
+    const [pushingScoreId, setPushingScoreId] = useState(null);
+
+
+    const pushScoreToLive = async (player, score) => {
+        if (!score) {
+            alert("No saved score is available to display.");
+            return;
+        }
+
+        const confirmed = window.confirm(
+            `Push ${player.name || player.playerName}'s ${readable(apparatus)} score to the live display for 30 seconds?`
+        );
+
+        if (!confirmed) return;
+
+        setPushingScoreId(player.id);
+
+        try {
+            await apiSecretary.post("/live-scores/push", {
+                playerId: player.id,
+                ageGroup,
+                type,
+                apparatus,
+            });
+
+            alert("Score pushed to the live display.");
+        } catch (error) {
+            console.error("Unable to push score:", error);
+            alert(getErrorMessage(error));
+        } finally {
+            setPushingScoreId(null);
+        }
+    };
+
 
     // Verify secretary session.
     useEffect(() => {
@@ -648,6 +685,7 @@ function SecretaryScoringPage() {
                         </div>
                     ) : (
                         <div className="space-y-2">
+
                             {filteredPlayers.map((player) => {
                                 const score = getScore(player);
                                 const submitted = Boolean(score);
@@ -659,22 +697,19 @@ function SecretaryScoringPage() {
                                     submitted;
 
                                 return (
-                                    <button
-                                        type="button"
+                                    <div
                                         key={player.id}
-                                        disabled={disabled}
-                                        onClick={() => openScoring(player)}
                                         className={`flex w-full items-center gap-3 rounded-2xl border p-4 text-left shadow-sm transition ${submitted
-                                            ? "border-emerald-200 bg-emerald-50"
-                                            : disabled
-                                                ? "border-slate-200 bg-white opacity-70"
-                                                : "border-slate-200 bg-white hover:border-indigo-300 hover:bg-indigo-50"
+                                                ? "border-emerald-200 bg-emerald-50"
+                                                : disabled
+                                                    ? "border-slate-200 bg-white opacity-70"
+                                                    : "border-slate-200 bg-white"
                                             }`}
                                     >
                                         <span
                                             className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-lg font-bold ${submitted
-                                                ? "bg-emerald-100 text-emerald-700"
-                                                : "bg-slate-100 text-slate-600"
+                                                    ? "bg-emerald-100 text-emerald-700"
+                                                    : "bg-slate-100 text-slate-600"
                                                 }`}
                                         >
                                             {submitted
@@ -689,39 +724,63 @@ function SecretaryScoringPage() {
                                                     .toUpperCase()}
                                         </span>
 
-                                        <span className="min-w-0 flex-1">
-                                            <span className="block truncate font-semibold text-slate-900">
+                                        <div className="min-w-0 flex-1">
+                                            <p className="truncate font-semibold text-slate-900">
                                                 {player.name ||
                                                     player.playerName ||
                                                     `Player ${player.id}`}
-                                            </span>
-                                            <span className="mt-1 block truncate text-sm text-slate-500">
+                                            </p>
+
+                                            <p className="mt-1 truncate text-sm text-slate-500">
                                                 {player.club_name ||
                                                     player.clubName ||
                                                     "Club not listed"}
-                                            </span>
-                                        </span>
+                                            </p>
+                                        </div>
 
-                                        <span className="shrink-0 text-right">
+                                        <div className="flex shrink-0 flex-col items-end gap-2">
                                             <span
-                                                className={`block rounded-full px-2.5 py-1 text-xs font-bold ${submitted
-                                                    ? "bg-emerald-100 text-emerald-800"
-                                                    : "bg-amber-100 text-amber-800"
+                                                className={`rounded-full px-2.5 py-1 text-xs font-bold ${submitted
+                                                        ? "bg-emerald-100 text-emerald-800"
+                                                        : "bg-amber-100 text-amber-800"
                                                     }`}
                                             >
                                                 {submitted ? "Submitted" : "Pending"}
                                             </span>
 
-                                            {submitted && (
-                                                <span className="mt-1 block text-xs font-semibold text-emerald-800">
-                                                    {score.totalScore ?? "Saved"}
-                                                </span>
+                                            {submitted ? (
+                                                <>
+                                                    <span className="text-xs font-semibold text-emerald-800">
+                                                        {score.totalScore ?? "Saved"}
+                                                    </span>
+
+                                                    <button
+                                                        type="button"
+                                                        disabled={pushingScoreId === player.id}
+                                                        onClick={() =>
+                                                            pushScoreToLive(player, score)
+                                                        }
+                                                        className="rounded-xl bg-indigo-600 px-3 py-2 text-sm font-bold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+                                                    >
+                                                        {pushingScoreId === player.id
+                                                            ? "Pushing…"
+                                                            : "Push to Live"}
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <button
+                                                    type="button"
+                                                    disabled={disabled}
+                                                    onClick={() => openScoring(player)}
+                                                    className="rounded-xl bg-indigo-600 px-3 py-2 text-sm font-bold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+                                                >
+                                                    Enter Score
+                                                </button>
                                             )}
-                                        </span>
-                                    </button>
+                                        </div>
+                                    </div>
                                 );
                             })}
-
                             {!filteredPlayers.length && (
                                 <div className="rounded-xl bg-white p-6 text-center text-sm text-slate-500">
                                     {playersError
@@ -886,6 +945,7 @@ function SecretaryScoringPage() {
                     </section>
                 </div>
             )}
+
         </main>
     );
 }

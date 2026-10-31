@@ -10,6 +10,8 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 import ConsolidatedSheet from "./Components/ConsolidatedSheet.jsx";
 import GradeHelper from "./Components/GradeHelper.jsx";
 import SecretaryScoringPage from "./Components/SecretaryScoringPage.jsx";
+import LivePage from "./Components/LivePage.jsx";
+
 
 const App = () => {
   return (
@@ -32,6 +34,7 @@ const App = () => {
           path="/secretary/scoring/:ageGroup/:type"
           element={<SecretaryScoringPage />}
         />
+        <Route path="/live" element={<LivePage />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
